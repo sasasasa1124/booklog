@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from django.utils.dateparse import parse_date
 
 def signUp(request):
     if request.method == 'POST':
@@ -23,13 +24,16 @@ def signUp(request):
 
 @login_required
 def post_list(request):
-    posts = Post.objects.filter(author__lte=request.user).order_by('created_date')
+    posts = Post.objects.filter(author=request.user).order_by('created_date')
     return render(request, 'blog/post_list.html', {'posts':posts})
 
 @login_required
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+    if post.author == request.user:
+        return render(request, 'blog/post_detail.html', {'post': post})
+    else:
+        return redirect('post_list')
 
 @login_required
 def post_new(request):
@@ -38,6 +42,11 @@ def post_new(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
+            post.book_isbn = request.POST['book_isbn']
+            post.book_title = request.POST['book_title']
+            post.book_authors = request.POST['book_authors']
+            post.book_publishedDate = request.POST['book_publishedDate']
+            post.book_description = request.POST['book_description']
             post.created_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
@@ -58,4 +67,4 @@ def post_edit(request, pk):
             return redirect('post_detail',pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form})
+    return render(request, 'blog/post_edit.html', {'form': form, 'post': post})

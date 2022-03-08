@@ -6,11 +6,10 @@
             <article class="post">
                 <div class="card">
                     <div class="card-body">
-                    <h5 class="card-title">{{ post.book_title }}</h5>
-                    <h6 class="card-subtitle mb-2">{{ post.title }}</h6>
+                    <h5 class="card-title"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h5>
+                    <h6 class="card-subtitle mb-2">{{ post.book_title }}</h6>
                     <h6 class="card-subtitle mb-2 text-muted">{{ post.created_date }}</h6>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="{% url 'post_detail' pk=post.pk %}" class="card-link">{{ post.title }}</a>
                     </div>
                 </div>
             </article>

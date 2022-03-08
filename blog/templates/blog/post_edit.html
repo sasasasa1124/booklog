@@ -6,33 +6,33 @@
         <div id="qr-reader" style="width: 600px"></div>
         <input type="text" name="book_isbn" class="book-isbn" hidden></input>
         <input type="text" name="book_title" class="book-title" hidden></input>
-        <input type="text" name="book_authors" class="book-author" hidden></input>
+        <input type="text" name="book_authors" class="book-authors" hidden></input>
         <input type="text" name="book_publishedDate" class="book-publishedDate" hidden></input>
         <input type="text" name="book_description" class="book-description" hidden></input>
         <table>
             <tr>
                 <th>ISBN</th>
-                <th class="book-isbn"></th>
+                <th class="book-isbn">{{ post.book_isbn }}</th>
               </tr>
             <tr>
               <th>Title</th>
-              <th class="book-title"></th>
+              <th class="book-title">{{ post.book_title }}</th>
             </tr>
             <tr>
               <td>Author</td>
-              <td class="book-author"></td>
+              <td class="book-authors">{{ post.book_authors }}</td>
             </tr>
             <tr>
               <td>Published Date</td>
-              <td class="book-publishedDate"></td>
+              <td class="book-publishedDate">{{ post.book_publishedDate }}</td>
             </tr>
             <tr>
               <td>Description</td>
-              <td class="book-description"></td>
+              <td class="book-description">{{ post.book_description }}</td>
             </tr>
           </table>
           <br>
-          {{ form.as_p }}  
+          {{ form.as_p }}
         <button type="submit" class="save btn btn-secondary" hiden>Save</button>
     </form>
 
@@ -42,16 +42,18 @@
             const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
             const data = await res.json();
             const bookinfo = data.items[0].volumeInfo;
-            document.getElementsByClassName("book-isbn")[0].innerHTML = isbn;
+            {% comment %} this part is dirty... {% endcomment %}
+            document.getElementsByClassName("book-isbn")[0].value = isbn;
             document.getElementsByClassName("book-isbn")[1].innerHTML = isbn;            
-            document.getElementsByClassName("book-title")[0].innerHTML = bookinfo.title;
+            document.getElementsByClassName("book-title")[0].value = bookinfo.title;
             document.getElementsByClassName("book-title")[1].innerHTML = bookinfo.title;
-            document.getElementsByClassName("book-author")[0].innerHTML = bookinfo.authors;
-            document.getElementsByClassName("book-author")[1].innerHTML = bookinfo.authors;
-            document.getElementsByClassName("book-publishedDate")[0].innerHTML = bookinfo.publishedDate;
+            document.getElementsByClassName("book-authors")[0].value = bookinfo.authors;
+            document.getElementsByClassName("book-authors")[1].innerHTML = bookinfo.authors;
+            document.getElementsByClassName("book-publishedDate")[0].value = bookinfo.publishedDate;
             document.getElementsByClassName("book-publishedDate")[1].innerHTML = bookinfo.publishedDate;
-            document.getElementsByClassName("book-description")[0].innerHTML = bookinfo.description;
+            document.getElementsByClassName("book-description")[0].value = bookinfo.description;
             document.getElementsByClassName("book-description")[1].innerHTML = bookinfo.description;
+            window.confirm('successfully read the barcode!!');
             return bookinfo
         }
 
