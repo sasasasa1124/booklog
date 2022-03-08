@@ -1,13 +1,20 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    {% for post in posts %}
-        <article class="post">
-            <time class="date">
-                {{ post.published_date }}
-            </time>
-            <h2><a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approved_comments.count }}</a></h2>
-            <p>{{ post.text|linebreaksbr }}</p>
-        </article>
-    {% endfor %}
+    {% if posts %}
+        {% for post in posts %}
+            <article class="post">
+                <div class="card">
+                    <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h5>
+                    <h6 class="card-subtitle mb-2">{{ post.book_title }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ post.created_date }}</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}        
+    {% else %}
+        <p>Currently no posts!!</p>
+    {% endif %}
 {% endblock %}

@@ -2,22 +2,45 @@
 
 {% block content %}
     <article class="post">
+        {% if post.updated_date %}
+            <time class="date">
+                {{ post.updated_date }}
+            </time>
+        {% else %}
+            <time class="date">
+                {{ post.created_date }}
+            </time>
+        {% endif %}
         <aside class="actions">
-            {% if user.is_authenticated %}
+            {% if user == post.author %}
                 <a class="btn btn-secondary" href="{% url 'post_edit' pk=post.pk %}">
                     {% include './icons/pencil-fill.svg' %}
                 </a>
                 <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove">delete</span></a>
             {% endif %}
         </aside>
-        {% if post.published_date %}
-            <div class="date">
-                {{ post.published_date }}
-            </div>
-        {% else %}
-            <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
-        {% endif %}
         <h2>{{ post.title }}</h2>
+        <table class="table">
+            <caption>Information of book</caption>
+            <tbody>
+                <tr>
+                  <th>Title</th>
+                  <th class="book-title">{{ post.book_title }}</th>
+                </tr>
+                <tr>
+                  <td>Author</td>
+                  <td class="book-author">{{ post.book_authors }}</td>
+                </tr>
+                <tr>
+                  <td>Published Date</td>
+                  <td class="book-publishedDate">{{ post.book_publishedDate }}</td>
+                </tr>
+                <tr>
+                  <td>Description</td>
+                  <td class="book-description">{{ post.book_description }}</td>
+                </tr>
+            </tbody>
+          </table>
         <p>{{ post.text|linebreaksbr }}</p>
     </article>
     <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
