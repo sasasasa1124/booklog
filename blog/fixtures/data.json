@@ -1,0 +1,23 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "sasasasa1124",
+            "email": "bambook1124@gmail.com",
+            "password": "pbkdf2_sha256$320000$Qbcgu7hGNambFFjmfNUZf3$o0I7AhzVfzg2l08N6NXqax9aFy/9TnLEC8N7WJbuPLE="
+        }
+    },
+    {
+        "model": "blog.post",
+        "pk": 1,
+        "fields": {
+            "author": 1,
+            "category": "diary",
+            "public": true,
+            "location": "[37.41, 8.82]",
+            "title": "this is the first post.",
+            "text": "Hi, is anyone there?"
+        }
+    }
+  ]

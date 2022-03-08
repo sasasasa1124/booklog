@@ -1,7 +1,11 @@
+from re import T
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from isbn_field import ISBNField
 
+class Book(models.Model):
+    isbn = ISBNField(clean_isbn=True)
 
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

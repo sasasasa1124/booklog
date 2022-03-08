@@ -3,7 +3,65 @@
 {% block content %}
     <h2>New post</h2>
     <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-secondary">Save</button>
+        <div id="qr-reader" style="width: 600px"></div>
+        <input type="text" class="book-title" hidden></input>
+        <input type="text" class="book-author" hidden></input>
+        <input type="text" class="book-publishedDate" hidden></input>
+        <input type="text" class="book-description" hidden></input>
+        <table>
+            <tr>
+              <th>Title</th>
+              <th class="book-title"></th>
+            </tr>
+            <tr>
+              <td>Author</td>
+              <td class="book-author"></td>
+            </tr>
+            <tr>
+              <td>Published Date</td>
+              <td class="book-publishedDate"></td>
+            </tr>
+            <tr>
+              <td>Description</td>
+              <td class="book-description"></td>
+            </tr>
+          </table>
+          <br>
+          {{ form.as_p }}  
+        <button type="submit" class="save btn btn-secondary" hiden>Save</button>
     </form>
+
+    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+    <script>
+        async function ISBNsearch(isbn) {
+            const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
+            const data = await res.json();
+            const bookinfo = data.items[0].volumeInfo;
+            console.log(bookinfo);
+            console.log(bookinfo.authors);
+            console.log(typeof(bookinfo.authors));
+            document.getElementsByClassName("book-title")[0].innerHTML = bookinfo.title;
+            document.getElementsByClassName("book-title")[1].innerHTML = bookinfo.title;
+            document.getElementsByClassName("book-author")[0].innerHTML = bookinfo.authors;
+            document.getElementsByClassName("book-author")[1].innerHTML = bookinfo.authors;
+            document.getElementsByClassName("book-publishedDate")[0].innerHTML = bookinfo.publishedDate;
+            document.getElementsByClassName("book-publishedDate")[1].innerHTML = bookinfo.publishedDate;
+            document.getElementsByClassName("book-description")[0].innerHTML = bookinfo.description;
+            document.getElementsByClassName("book-description")[1].innerHTML = bookinfo.description;
+            return bookinfo
+        }
+
+        {% comment %} https://blog.minhazav.dev/QR-and-barcode-scanner-using-html-and-javascript/ for QR/barcode scanning {% endcomment %}
+        function onScanSuccess(decodedText, decodedResult) {
+            var result = ISBNsearch(decodedText);
+        }
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+
+
+
+        
+
+    </script>
 {% endblock %}
