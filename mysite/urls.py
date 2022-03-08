@@ -1,5 +1,6 @@
 from django.urls import path, include
 from django.contrib.auth import views
+from django.contrib import admin
 from blog import views as default_views
 
 urlpatterns = [
