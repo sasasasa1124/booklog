@@ -4,11 +4,16 @@
     <h2>New post</h2>
     <form method="POST" class="post-form">{% csrf_token %}
         <div id="qr-reader" style="width: 600px"></div>
-        <input type="text" class="book-title" hidden></input>
-        <input type="text" class="book-author" hidden></input>
-        <input type="text" class="book-publishedDate" hidden></input>
-        <input type="text" class="book-description" hidden></input>
+        <input type="text" name="book_isbn" class="book-isbn" hidden></input>
+        <input type="text" name="book_title" class="book-title" hidden></input>
+        <input type="text" name="book_authors" class="book-author" hidden></input>
+        <input type="text" name="book_publishedDate" class="book-publishedDate" hidden></input>
+        <input type="text" name="book_description" class="book-description" hidden></input>
         <table>
+            <tr>
+                <th>ISBN</th>
+                <th class="book-isbn"></th>
+              </tr>
             <tr>
               <th>Title</th>
               <th class="book-title"></th>
@@ -37,9 +42,8 @@
             const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
             const data = await res.json();
             const bookinfo = data.items[0].volumeInfo;
-            console.log(bookinfo);
-            console.log(bookinfo.authors);
-            console.log(typeof(bookinfo.authors));
+            document.getElementsByClassName("book-isbn")[0].innerHTML = isbn;
+            document.getElementsByClassName("book-isbn")[1].innerHTML = isbn;            
             document.getElementsByClassName("book-title")[0].innerHTML = bookinfo.title;
             document.getElementsByClassName("book-title")[1].innerHTML = bookinfo.title;
             document.getElementsByClassName("book-author")[0].innerHTML = bookinfo.authors;
