@@ -88,7 +88,16 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # this is not desirable since the Database information about the heroku database is exposed in the file... 
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'debn1g0419821b',
+#         'USER': 'iwjzkmlszczijk',
+#         'PASSWORD': 'dae47f6fffe52841c47067ed69df720ae1f4a5cb7569f25662aa114073dd9707',
+#         'HOST': 'ec2-34-231-183-74.compute-1.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 
 DATABASE_URL = os.getenv('DATABASE_URL')
 DATABASES = {
@@ -135,7 +144,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # STATIC_ROOT = BASE_DIR / 'static'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-django_heroku.settings(locals())
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
