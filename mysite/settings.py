@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import dj_database_url
 import os
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,6 @@ APP_NAME = 'Book Log'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY = 'django-insecure-3ty(141te*lm%!7!%#*z(mo(uw#nlai7bytj8tyt8(4p7p^8l('
@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-3ty(141te*lm%!7!%#*z(mo(uw#nlai7bytj8tyt8(4p7p^8l(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'booklog.herokuapp.com']
 
 
 # Application definition
@@ -85,29 +85,27 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'booklog',
-#         'USER': 'sasasasa1124',
-#         'PASSWORD': 'UTokyo3356!',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
+
+# this is not desirable since the Database information about the heroku database is exposed in the file... 
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'name',
-        'USER': 'user',
-        'PASSWORD': '',
-        'HOST': 'host',
-        'PORT': '',
+        'NAME': 'debn1g0419821b',
+        'USER': 'iwjzkmlszczijk',
+        'PASSWORD': 'dae47f6fffe52841c47067ed69df720ae1f4a5cb7569f25662aa114073dd9707',
+        'HOST': 'ec2-34-231-183-74.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
-db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'].update(db_from_env)
+
+# DATABASE_URL = os.getenv('DATABASE_URL')
+# DATABASES = {
+#     'default': dj_database_url.config(),
+# }
+# DATABASES = {}
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -143,9 +141,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 # STATIC_ROOT = BASE_DIR / 'static'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+django_heroku.settings(locals())
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -159,7 +158,7 @@ try:
 except ImportError:
     pass
 
-if not DEBUG:
-    SECRET_KEY = os.environ['SECRET_KEY']
-    import django_heroku
-    django_heroku.settings(locals())
+# if not DEBUG:
+#     SECRET_KEY = os.environ['SECRET_KEY']
+#     import django_heroku
+#     django_heroku.settings(locals())
